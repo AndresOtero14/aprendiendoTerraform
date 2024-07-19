@@ -11,3 +11,5 @@ tags = {
   "cloud" = "AWS"
   "IAC_version" = "1.9.0"
 }
+
+sg_ingress_cidr = "0.0.0.0/0"
