@@ -84,3 +84,29 @@ resource "aws_route_table_association" "crta_public_subnet" {
      Name = "Public Instance SG-${local.sufix}"
    }
  }
+
+
+module "mybucket" {
+  source = "./modules/s3"
+  bucket_name = "nombre-unico-123456"
+}
+
+output "s3_arn" {
+  value = module.mybucket.s3_bucket_arn
+}
+
+
+module "terraform_state_backend" {
+     source = "cloudposse/tfstate-backend/aws"
+     # Cloud Posse recommends pinning every module to a specific version
+     version     = "1.4.1"
+     namespace  = "example12367"
+     stage      = "prod"
+     name       = "terraform"
+     environment = "us-east-1"
+     attributes = ["state"]
+
+     terraform_backend_config_file_path = "."
+     terraform_backend_config_file_name = "backend.tf"
+     force_destroy                      = false
+   }
